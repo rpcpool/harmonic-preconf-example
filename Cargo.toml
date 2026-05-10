@@ -1,0 +1,23 @@
+[package]
+name = "preconf-example"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "preconf_example"
+path = "src/main.rs"
+
+[build-dependencies]
+tonic-prost-build = "0.14"
+
+[dependencies]
+clap = { version = "4.4.3", features = ["derive"] }
+env_logger = "0.10.0"
+log = "0.4.17"
+prost = "0.14"
+rustls = { version = "0.23", default-features = false, features = ["aws-lc-rs", "logging", "std", "tls12"] }
+solana-keypair = "3.0"
+solana-signer = "3.0"
+tokio = { version = "1.14.1", features = ["rt-multi-thread", "macros", "signal"] }
+tonic = { version = "0.14", features = ["transport", "tls-native-roots"] }
+tonic-prost = "0.14"
