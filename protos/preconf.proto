@@ -2,14 +2,6 @@ syntax = "proto3";
 
 package preconf;
 
-// Standard three-stage auth:
-//   1. Client calls `GenerateAuthChallenge(pubkey)` — server returns opaque
-//      challenge bytes it must sign.
-//   2. Client calls `GenerateAuthTokens(pubkey, challenge, signature)` —
-//      server verifies the ed25519 signature, looks up the pubkey in
-//      `preconf_keys`, and returns a short-lived JWT access token.
-//   3. Client calls `SubscribePreconfs` with `Authorization: Bearer <JWT>`
-//      metadata and receives a server-side stream of `Preconf` messages.
 service PreconfAuthService {
   rpc GenerateAuthChallenge(GenerateAuthChallengeRequest) returns (GenerateAuthChallengeResponse);
   rpc GenerateAuthTokens(GenerateAuthTokensRequest) returns (GenerateAuthTokensResponse);
@@ -25,9 +17,6 @@ message GenerateAuthChallengeRequest {
 }
 
 message GenerateAuthChallengeResponse {
-  // Opaque bytes to sign. Bound to pubkey + region + server hostname + a
-  // random 32-byte nonce, so a signature cannot be replayed against a
-  // different server, region, or session.
   bytes challenge = 1;
 }
 
@@ -39,9 +28,7 @@ message GenerateAuthTokensRequest {
 }
 
 message Token {
-  // Opaque JWT string. Present as `Authorization: Bearer <value>`.
   string value = 1;
-  // Unix milliseconds at which this token expires.
   int64 expires_at_ms = 2;
 }
 
@@ -53,6 +40,6 @@ message SubscribePreconfsRequest {}
 
 message Preconf {
   uint64 slot = 1;
-  // Raw serialized Solana transaction, as it was received by the builder.
+  // Raw serialized Solana transaction.
   bytes data = 2;
 }
