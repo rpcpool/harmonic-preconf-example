@@ -17,7 +17,7 @@ For a given Preconf server, Preconfs will _only be sent_ during the leader windo
 
 ```sh
 cargo run --release -- \
-    --url https://ams.be.harmonic.gg:12349 \
+    --url http://ams.be.harmonic.gg:12349 \
     --keypair ./keypair.json
 ```
 
