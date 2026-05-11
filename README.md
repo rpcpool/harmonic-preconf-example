@@ -3,6 +3,10 @@
 Minimal Rust client for the preconf gRPC service. Authenticates with an
 ed25519 keypair (challenge / signature → JWT) and streams `Preconf` messages.
 
+## IMPORTANT!
+
+For a given Preconf server, Preconfs will _only be sent_ during the leader window of a validator connected to _that Harmonic region_.  This may make single-region connections appear to have sparse traffic.
+
 ## Layout
 
 - `protos/preconf.proto` — service definition (auth + stream).
@@ -13,7 +17,7 @@ ed25519 keypair (challenge / signature → JWT) and streams `Preconf` messages.
 
 ```sh
 cargo run --release -- \
-    --url https://preconf.example.com:443 \
+    --url https://ams.be.harmonic.gg:12349 \
     --keypair ./keypair.json
 ```
 
