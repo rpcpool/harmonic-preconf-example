@@ -7,6 +7,10 @@ ed25519 keypair (challenge / signature → JWT) and streams `Preconf` messages.
 
 For a given Preconf server, Preconfs will _only be sent_ during the leader window of a validator connected to _that Harmonic region_.  This may make single-region connections appear to have sparse traffic.
 
+The Preconf Protocol is currently in alpha testing, and breaking changes may be pushed at the sole discretion of the Harmonic team.
+
+Join the [Harmonic Discord](https://discord.gg/sCWBcNHHeN) for API update announcements.
+
 ## Layout
 
 - `protos/preconf.proto` — service definition (auth + stream).

@@ -8,7 +8,7 @@ service PreconfAuthService {
 }
 
 service PreconfService {
-  rpc SubscribePreconfs(SubscribePreconfsRequest) returns (stream Preconf);
+  rpc SubscribePreconfs(SubscribePreconfsRequest) returns (stream PreconfStreamMessage);
 }
 
 message GenerateAuthChallengeRequest {
@@ -38,8 +38,22 @@ message GenerateAuthTokensResponse {
 
 message SubscribePreconfsRequest {}
 
+message ValidatorSlotStart {
+  bytes leader_address = 1;
+  uint64 slot = 2;
+  // Nanoseconds since the unix epoch.
+  uint64 server_side_timestamp = 3;
+}
+
 message Preconf {
   uint64 slot = 1;
   // Raw serialized Solana transaction.
   bytes data = 2;
+}
+
+message PreconfStreamMessage {
+  oneof message {
+    ValidatorSlotStart validator_slot_start = 1;
+    Preconf preconf = 2;
+  }
 }

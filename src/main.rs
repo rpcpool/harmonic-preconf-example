@@ -7,6 +7,7 @@ use std::time::Duration;
 use clap::Parser;
 use log::{info, warn};
 use solana_keypair::read_keypair_file;
+use solana_pubkey::Pubkey;
 use solana_signer::Signer;
 use tonic::metadata::MetadataValue;
 use tonic::transport::Endpoint;
@@ -18,8 +19,8 @@ pub mod preconf_proto {
 
 use preconf_proto::{
     preconf_auth_service_client::PreconfAuthServiceClient,
-    preconf_service_client::PreconfServiceClient, GenerateAuthChallengeRequest,
-    GenerateAuthTokensRequest, SubscribePreconfsRequest,
+    preconf_service_client::PreconfServiceClient, preconf_stream_message::Message,
+    GenerateAuthChallengeRequest, GenerateAuthTokensRequest, SubscribePreconfsRequest,
 };
 
 #[derive(Parser)]
@@ -100,11 +101,32 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     info!("subscribed, streaming...");
 
     while let Some(msg) = stream.message().await? {
-        println!("slot={} txn_bytes={}", msg.slot, msg.data.len());
+        match msg.message {
+            Some(Message::Preconf(p)) => {
+                println!("preconf slot={} txn_bytes={}", p.slot, p.data.len());
+            }
+            Some(Message::ValidatorSlotStart(vss)) => {
+                println!(
+                    "validator_slot_start slot={} leader={} server_side_timestamp_ns={}",
+                    vss.slot,
+                    pubkey_to_string(&vss.leader_address),
+                    vss.server_side_timestamp,
+                );
+            }
+            None => {
+                warn!("empty PreconfStreamMessage");
+            }
+        }
     }
 
     warn!("stream ended");
     Ok(())
+}
+
+fn pubkey_to_string(bytes: &[u8]) -> String {
+    <[u8; 32]>::try_from(bytes)
+        .map(|arr| Pubkey::new_from_array(arr).to_string())
+        .unwrap_or_else(|_| format!("<invalid pubkey: {} bytes>", bytes.len()))
 }
 
 fn build_endpoint(url: &str) -> Result<Endpoint, Box<dyn std::error::Error>> {
