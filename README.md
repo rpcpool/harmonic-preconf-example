@@ -29,12 +29,12 @@ The keypair must be authenticated to connect to the Preconf server.
 
 ## Endpoints
 
-ams - `http://ams.be.harmonic.gg:12349`
-fra - `http://fra.be.harmonic.gg:12349`
-lon - `http://lon.be.harmonic.gg:12349`
-ewr - `http://ewr.be.harmonic.gg:12349`
-sgp - `http://sgp.be.harmonic.gg:12349`
-tyo - `http://tyo.be.harmonic.gg:12349`
+ams - `http://ams.be.harmonic.gg:12349`  
+fra - `http://fra.be.harmonic.gg:12349`  
+lon - `http://lon.be.harmonic.gg:12349`  
+ewr - `http://ewr.be.harmonic.gg:12349`  
+sgp - `http://sgp.be.harmonic.gg:12349`  
+tyo - `http://tyo.be.harmonic.gg:12349`  
 
 ## Protocol
 
