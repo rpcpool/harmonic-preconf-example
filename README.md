@@ -35,6 +35,7 @@ lon - `http://lon.be.harmonic.gg:12349`
 ewr - `http://ewr.be.harmonic.gg:12349`  
 sgp - `http://sgp.be.harmonic.gg:12349`  
 tyo - `http://tyo.be.harmonic.gg:12349`  
+slc - `http://slc.be.harmonic.gg:12349`  
 
 ## Protocol
 
