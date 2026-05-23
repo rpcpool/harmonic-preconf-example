@@ -103,7 +103,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     while let Some(msg) = stream.message().await? {
         match msg.message {
             Some(Message::Preconf(p)) => {
-                println!("preconf slot={} txn_bytes={}", p.slot, p.data.len());
+                println!(
+                    "preconf slot={} transaction_index={} txn_bytes={}",
+                    p.slot,
+                    p.transaction_index,
+                    p.data.len()
+                );
             }
             Some(Message::ValidatorSlotStart(vss)) => {
                 println!(

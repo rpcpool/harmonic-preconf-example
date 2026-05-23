@@ -43,5 +43,6 @@ slc - `http://slc.be.harmonic.gg:12349`
 2. `GenerateAuthTokens(pubkey, challenge, signature)` — server verifies the
    ed25519 signature over `challenge` and returns a short-lived JWT.
 3. `SubscribePreconfs` with `Authorization: Bearer <JWT>` metadata — server
-   streams `Preconf { slot, data }` where `data` is the raw serialized
-   Solana transaction as the builder received it.
+   streams `Preconf { slot, data, transaction_index }` where `data` is the raw
+   serialized Solana transaction as the builder received it, and
+   `transaction_index` is its position within the block.
