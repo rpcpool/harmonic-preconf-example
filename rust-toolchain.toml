@@ -1,0 +1,8 @@
+# Pins the toolchain used by rpcpool/Binaries-ci _build-release.yml, which reads
+# the `channel` value here to `rustup toolchain install` before building.
+# preconf-example targets edition 2021 and depends on solana-* 3.x; a recent
+# stable comfortably satisfies their MSRV.
+[toolchain]
+channel = "1.86.0"
+targets = ["x86_64-unknown-linux-gnu"]
+profile = "minimal"

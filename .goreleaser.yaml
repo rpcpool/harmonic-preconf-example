@@ -1,0 +1,55 @@
+# GoReleaser config for the Harmonic preconf-example client.
+#
+# This repo is rpcpool's mirror of github.com/harmonic/preconf-example. It is
+# built through rpcpool/Binaries-ci's reusable _build-release.yml workflow:
+#
+#   gh workflow run build-release.yml --repo rpcpool/Binaries-ci \
+#     --field org=rpcpool --field repo=harmonic-preconf-example --field tag=v0.1.0
+#
+# Because there is no Binaries-ci registry entry for this repo, the workflow
+# runs in "default" mode and uses THIS .goreleaser.yaml as-is (no +org-repo
+# build-metadata suffix is appended to the tag). GCS upload, cosign signing,
+# GitHub Release publishing and the Slack announce are injected at build time
+# from ci/goreleaser-patch.yaml in Binaries-ci -- do NOT duplicate them here.
+#
+# `command: build` selects native `cargo build` instead of goreleaser's default
+# `cargo zigbuild`: preconf-example depends on solana-keypair/solana-signer 3.x
+# and rustls with the aws-lc-rs backend, whose build script needs the host C
+# toolchain/headers (cmake + system headers) that Zig does not expose. Same
+# approach as rpcpool/yellowstone-jet and jito-relayer.
+#
+# project_name is pinned so the published path is stable regardless of the repo
+# name: gs://nomad-triton-test/preconf-example/v<version>/preconf_example_linux_amd64
+#
+# The Cargo package is `preconf-example`; its single binary is `preconf_example`
+# (underscore) per the [[bin]] stanza in Cargo.toml.
+#
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+
+version: 2
+
+project_name: preconf-example
+
+builds:
+    - id: preconf-example
+      builder: rust
+      command: build
+      binary: preconf_example
+      targets:
+          - x86_64-unknown-linux-gnu
+      flags:
+          - --release
+          - --package=preconf-example
+          - '{{ if index .Env "CARGO_FEATURES" }}--features={{ index .Env "CARGO_FEATURES" }}{{ end }}'
+
+archives:
+    - formats: [binary]
+      name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
+
+release:
+    header: |
+        rust {{ .Env.RUST_VERSION }}
+
+changelog:
+    sort: asc
+    use: github
