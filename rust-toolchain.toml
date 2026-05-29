@@ -1,7 +1,9 @@
-# Pins the toolchain used by rpcpool/Binaries-ci _build-release.yml, which reads
-# the `channel` value here to `rustup toolchain install` before building.
-# preconf-example targets edition 2021 and depends on solana-* 3.x; a recent
-# stable comfortably satisfies their MSRV.
+# Pinned Rust toolchain for rpcpool/Binaries-ci _build-release.yml, which reads
+# this file to `rustup toolchain install` before building. preconf-example
+# targets edition 2021 and depends on solana-* 3.x; a recent stable satisfies
+# their MSRV.
+# NOTE: build-release.yml greps this file naively, so do not use the word
+# c-h-a-n-n-e-l anywhere except the toolchain key below.
 [toolchain]
 channel = "1.86.0"
 targets = ["x86_64-unknown-linux-gnu"]
